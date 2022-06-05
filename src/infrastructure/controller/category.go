@@ -6,6 +6,7 @@ import (
 	"github.com/mindstand/gogm/v2"
 	"net/http"
 	"produx/domain/entity"
+	"produx/domain/product/dto"
 	"produx/infrastructure/container"
 	"produx/infrastructure/response"
 )
@@ -13,8 +14,14 @@ import (
 type Category struct{}
 
 func (a Category) Get(context echo.Context, c container.Container) error {
-
-	return context.JSON(http.StatusOK, response.NewCategoryResponse(&entity.Category{}))
+	category := c.GetCategoryService().Get(context.Param("id"))
+	if len(category.UUID) == 0 {
+		return context.JSON(
+			http.StatusNotFound,
+			response.NewErrorResponse(fmt.Sprintf("category not found %s", context.Param("id"))),
+		)
+	}
+	return context.JSON(http.StatusOK, response.NewCategoryResponse(category))
 }
 
 func (a Category) Create(context echo.Context, c container.Container) error {
@@ -69,4 +76,10 @@ func (a Category) List(context echo.Context, c container.Container) error {
 	categories := c.GetCategoryService().List()
 
 	return context.JSON(http.StatusOK, response.NewCategoryListResponse(categories))
+}
+
+func (a Category) Products(context echo.Context, c container.Container) error {
+	category := c.GetCategoryService().Get(context.Param("id"))
+
+	return context.JSON(http.StatusOK, dto.NewProductListResponse(category.Products))
 }

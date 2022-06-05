@@ -134,6 +134,12 @@ func PreparePublicRoutes(e *echo.Echo, containerInstance container.Container) {
 		return catController.Update(c, containerInstance)
 	})
 
+	e.GET("/category/:id/products", func(c echo.Context) error {
+		catController := controller.Category{}
+
+		return catController.Products(c, containerInstance)
+	})
+
 	e.POST("/category", func(c echo.Context) error {
 		catController := controller.Category{}
 
