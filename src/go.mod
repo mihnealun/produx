@@ -7,7 +7,7 @@ require (
 	github.com/joho/godotenv v1.3.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/labstack/echo/v4 v4.1.16
-	github.com/mindstand/gogm/v2 v2.2.0
+	github.com/mindstand/gogm/v2 v2.3.1
 	github.com/sirupsen/logrus v1.8.1
 )
 

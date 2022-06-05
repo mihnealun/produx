@@ -49,7 +49,27 @@ func (a *category) Update(categ entity.Category) *entity.Category {
 	return &categ
 }
 
-func (a *category) Delete(categ entity.Category) bool {
+func (a *category) Delete(categ *entity.Category) bool {
+	sess, err := a.driver.NewSessionV2(gogm.SessionConfig{AccessMode: gogm.AccessModeWrite})
+	if err != nil {
+		log.Println(err.Error())
+		return false
+	}
+
+	err = sess.Begin(context.Background())
+	if err != nil {
+		log.Println(err.Error())
+		return false
+	}
+
+	defer a.commitAndClose(sess)
+
+	err = sess.Delete(context.Background(), categ)
+	if err != nil {
+		log.Println(err.Error())
+		return false
+	}
+
 	return true
 }
 
@@ -95,12 +115,33 @@ func (a *category) List() []*entity.Category {
 
 	defer a.commitAndClose(sess)
 
-	err = sess.LoadAll(context.Background(), &allCategs)
+	err = sess.LoadAllDepth(context.Background(), &allCategs, 3)
 	if err != nil {
 		log.Println(err.Error())
 	}
 
 	return allCategs
+}
+
+func (a *category) getTree(categs []*entity.Category) []*entity.Category {
+	var final []*entity.Category
+
+	for _, cat := range categs {
+		if cat.Parent == nil {
+			final = append(final, cat)
+		}
+	}
+
+	return final
+}
+
+func (a *category) addSubcategory(parent, child *entity.Category) {
+	for _, c := range parent.Subcategories {
+		if c.UUID == child.UUID {
+			return
+		}
+	}
+	parent.Subcategories = append(parent.Subcategories, child)
 }
 
 func (a *category) commitAndClose(sess gogm.SessionV2) {

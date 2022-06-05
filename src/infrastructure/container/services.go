@@ -80,7 +80,17 @@ func (c *container) GetLogger(ctx context.Context) (Logger, error) {
 func (c *container) InitStorageDriver() error {
 	var err error
 
-	c.gogm, err = gogm.New(&c.ogmConfig, gogm.UUIDPrimaryKeyStrategy, &entity.Comment{}, &entity.Target{}, &entity.User{}, &entity.App{})
+	c.gogm, err = gogm.New(
+		&c.ogmConfig,
+		gogm.UUIDPrimaryKeyStrategy,
+		&entity.Seller{},
+		&entity.Product{},
+		&entity.Category{},
+		&entity.Comment{},
+		&entity.Target{},
+		&entity.User{},
+		&entity.App{},
+	)
 	if err != nil {
 		panic(err)
 	}

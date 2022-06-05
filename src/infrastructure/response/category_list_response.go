@@ -14,7 +14,9 @@ func NewCategoryListResponse(categories []*entity.Category) CategoryListResponse
 	}
 
 	for _, cat := range categories {
-		result.Categories = append(result.Categories, NewCategoryResponse(cat))
+		if cat.Parent == nil {
+			result.Categories = append(result.Categories, NewCategoryResponse(cat))
+		}
 	}
 
 	return result

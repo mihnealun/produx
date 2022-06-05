@@ -1,7 +1,6 @@
 package container
 
 import (
-	"fmt"
 	"os"
 	"path"
 	"path/filepath"
@@ -38,14 +37,13 @@ var onceConfig sync.Once
 func getConfigInstance() (*Config, error) {
 	var err error
 	onceConfig.Do(func() {
-		ex, err := os.Executable()
+		wd, err := os.Getwd()
 		if err != nil {
 			panic(err)
 		}
-		exPath := filepath.Dir(ex)
-		fmt.Println(exPath)
+		parent := filepath.Dir(wd)
 
-		err = godotenv.Load(path.Join(exPath, ".env"))
+		err = godotenv.Load(path.Join(parent, ".env"))
 		if err != nil {
 			return
 		}

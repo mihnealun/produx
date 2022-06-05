@@ -43,7 +43,7 @@ func (a *seller) Get(id string) *entity.Seller {
 	return &seller
 }
 
-func (a *seller) Add(prod entity.Seller) *entity.Seller {
+func (a *seller) Add(seller entity.Seller) *entity.Seller {
 	sess, err := a.driver.NewSessionV2(gogm.SessionConfig{AccessMode: gogm.AccessModeWrite})
 	if err != nil {
 		log.Fatal(err)
@@ -56,13 +56,13 @@ func (a *seller) Add(prod entity.Seller) *entity.Seller {
 		log.Fatal(err)
 	}
 
-	err = sess.SaveDepth(context.Background(), &prod, 1)
+	err = sess.Save(context.Background(), &seller)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	var result entity.Seller
-	err = sess.Load(context.Background(), &result, prod.UUID)
+	err = sess.Load(context.Background(), &result, seller.UUID)
 	if err != nil {
 		log.Fatal(err)
 	}

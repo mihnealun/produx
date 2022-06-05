@@ -23,6 +23,7 @@ func (a Seller) Create(context echo.Context, c container.Container) error {
 		Slug:         context.FormValue("slug"),
 		Image:        context.FormValue("image"),
 		Address:      context.FormValue("address"),
+		Products:     nil,
 	}
 
 	result := c.GetSellerService().Add(seller)

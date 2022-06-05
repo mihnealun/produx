@@ -3,9 +3,11 @@ package dto
 import "produx/domain/entity"
 
 type SellerResponse struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	Slug string `json:"slug"`
+	ID      string `json:"id"`
+	Name    string `json:"name"`
+	Slug    string `json:"slug"`
+	Image   string `json:"image§"`
+	Address string `json:"address"`
 }
 
 type SellerListResponse struct {
@@ -14,9 +16,11 @@ type SellerListResponse struct {
 
 func NewSellerResponse(item *entity.Seller) SellerResponse {
 	return SellerResponse{
-		ID:   item.UUID,
-		Name: item.Name,
-		Slug: item.Slug,
+		ID:      item.UUID,
+		Name:    item.Name,
+		Slug:    item.Slug,
+		Image:   item.Image,
+		Address: item.Address,
 	}
 }
 
