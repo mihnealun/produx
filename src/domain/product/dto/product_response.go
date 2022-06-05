@@ -9,6 +9,7 @@ type ProductResponse struct {
 }
 
 type ProductListResponse struct {
+	Count    int               `json:"count"`
 	Products []ProductResponse `json:"products"`
 }
 
@@ -28,6 +29,8 @@ func NewProductListResponse(products []*entity.Product) ProductListResponse {
 	for _, prod := range products {
 		result.Products = append(result.Products, NewProductResponse(prod))
 	}
+
+	result.Count = len(result.Products)
 
 	return result
 }
