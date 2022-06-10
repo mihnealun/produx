@@ -2,10 +2,11 @@ package storage
 
 import (
 	"context"
-	"github.com/mindstand/gogm/v2"
 	"log"
 	"produx/domain/category/service"
 	"produx/domain/entity"
+
+	"github.com/mindstand/gogm/v2"
 )
 
 type category struct {
@@ -93,6 +94,36 @@ func (a *category) Get(id string) *entity.Category {
 	err = sess.Load(context.Background(), &category, &id)
 	if err != nil {
 		log.Println(err.Error())
+	}
+
+	return &category
+}
+
+func (a *category) GetByName(name string) *entity.Category {
+	var category entity.Category
+
+	sess, err := a.driver.NewSessionV2(gogm.SessionConfig{AccessMode: gogm.AccessModeWrite})
+	if err != nil {
+		log.Println(err.Error())
+		return nil
+	}
+
+	err = sess.Begin(context.Background())
+	if err != nil {
+		log.Println(err.Error())
+		return nil
+	}
+
+	defer a.commitAndClose(sess)
+
+	query := "match c=(:Category{name:$name}) return c"
+	err = sess.Query(context.Background(), query, map[string]interface{}{
+		"name": name,
+	}, &category)
+
+	if err != nil {
+		log.Println(err.Error())
+		return nil
 	}
 
 	return &category

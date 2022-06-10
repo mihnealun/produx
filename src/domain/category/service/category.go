@@ -10,4 +10,5 @@ type Category interface {
 	Delete(app *entity.Category) bool
 	List() []*entity.Category
 	Get(id string) *entity.Category
+	GetByName(name string) *entity.Category
 }

@@ -2,13 +2,14 @@ package controller
 
 import (
 	"fmt"
-	"github.com/labstack/echo/v4"
-	"github.com/mindstand/gogm/v2"
 	"net/http"
 	"produx/domain/entity"
 	"produx/domain/product/dto"
 	"produx/infrastructure/container"
 	"produx/infrastructure/response"
+
+	"github.com/labstack/echo/v4"
+	"github.com/mindstand/gogm/v2"
 )
 
 type Category struct{}
@@ -25,6 +26,17 @@ func (a Category) Get(context echo.Context, c container.Container) error {
 }
 
 func (a Category) Create(context echo.Context, c container.Container) error {
+	cService := c.GetCategoryService()
+
+	// check if category with that name already exists
+	oldCategory := cService.GetByName(context.FormValue("name"))
+	if oldCategory != nil {
+		return context.JSON(
+			http.StatusBadRequest,
+			response.NewErrorResponse(fmt.Sprintf("category named '%s' already exists (%s)", context.FormValue("name"), oldCategory.UUID)),
+		)
+	}
+
 	category := entity.Category{
 		BaseUUIDNode: gogm.BaseUUIDNode{},
 		Name:         context.FormValue("name"),
@@ -33,7 +45,7 @@ func (a Category) Create(context echo.Context, c container.Container) error {
 
 	// find and link parent category
 	if len(context.FormValue("parent")) > 0 {
-		parent := c.GetCategoryService().Get(context.FormValue("parent"))
+		parent := cService.Get(context.FormValue("parent"))
 		if len(parent.UUID) == 0 {
 			return context.JSON(
 				http.StatusBadRequest,
@@ -44,7 +56,7 @@ func (a Category) Create(context echo.Context, c container.Container) error {
 		category.Parent = parent
 	}
 
-	result := c.GetCategoryService().Add(category)
+	result := cService.Add(category)
 
 	return context.JSON(http.StatusOK, response.NewCategoryResponse(result))
 }

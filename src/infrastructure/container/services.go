@@ -3,8 +3,9 @@ package container
 import "C"
 import (
 	"context"
-	"github.com/mindstand/gogm/v2"
+	"fmt"
 	"log"
+	"os"
 	service2 "produx/domain/category/service"
 	storage2 "produx/domain/category/storage"
 	"produx/domain/entity"
@@ -15,6 +16,8 @@ import (
 	"produx/domain/service"
 	"produx/infrastructure/storage"
 	"sync"
+
+	"github.com/mindstand/gogm/v2"
 )
 
 // Container interface that described what services it holds
@@ -92,7 +95,8 @@ func (c *container) InitStorageDriver() error {
 		&entity.App{},
 	)
 	if err != nil {
-		panic(err)
+		log.Println(fmt.Errorf("cannot connect to Neo4J server: %w", err))
+		os.Exit(0)
 	}
 
 	gogm.SetGlobalGogm(c.gogm)
