@@ -3,24 +3,24 @@ package storage
 import (
 	"context"
 	"log"
+	"produx/domain/attribute/service"
 	"produx/domain/entity"
-	"produx/domain/seller/service"
 
 	"github.com/mindstand/gogm/v2"
 )
 
-type seller struct {
+type attribute struct {
 	driver *gogm.Gogm
 }
 
-func NewSellerService(driver *gogm.Gogm) service.Seller {
-	return &seller{
+func NewAttributeService(driver *gogm.Gogm) service.Attribute {
+	return &attribute{
 		driver: driver,
 	}
 }
 
-func (a *seller) Get(id string) *entity.Seller {
-	var seller entity.Seller
+func (a *attribute) Get(id string) *entity.Attribute {
+	var attribute entity.Attribute
 
 	sess, err := a.driver.NewSessionV2(gogm.SessionConfig{AccessMode: gogm.AccessModeWrite})
 	if err != nil {
@@ -36,15 +36,15 @@ func (a *seller) Get(id string) *entity.Seller {
 
 	defer a.commitAndClose(sess)
 
-	err = sess.Load(context.Background(), &seller, &id)
+	err = sess.Load(context.Background(), &attribute, &id)
 	if err != nil {
 		log.Println(err.Error())
 	}
 
-	return &seller
+	return &attribute
 }
 
-func (a *seller) Add(seller entity.Seller) *entity.Seller {
+func (a *attribute) Add(attribute entity.Attribute) *entity.Attribute {
 	sess, err := a.driver.NewSessionV2(gogm.SessionConfig{AccessMode: gogm.AccessModeWrite})
 	if err != nil {
 		log.Fatal(err)
@@ -57,13 +57,13 @@ func (a *seller) Add(seller entity.Seller) *entity.Seller {
 		log.Fatal(err)
 	}
 
-	err = sess.Save(context.Background(), &seller)
+	err = sess.Save(context.Background(), &attribute)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var result entity.Seller
-	err = sess.Load(context.Background(), &result, seller.UUID)
+	var result entity.Attribute
+	err = sess.Load(context.Background(), &result, attribute.UUID)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -71,11 +71,11 @@ func (a *seller) Add(seller entity.Seller) *entity.Seller {
 	return &result
 }
 
-func (a *seller) Update(prod entity.Seller) *entity.Seller {
-	return &prod
+func (a *attribute) Update(item entity.Attribute) *entity.Attribute {
+	return &item
 }
 
-func (a *seller) Delete(item entity.Seller) bool {
+func (a *attribute) Delete(item entity.Attribute) bool {
 	sess, err := a.driver.NewSessionV2(gogm.SessionConfig{AccessMode: gogm.AccessModeWrite})
 	if err != nil {
 		log.Println(err.Error())
@@ -99,32 +99,32 @@ func (a *seller) Delete(item entity.Seller) bool {
 	return true
 }
 
-func (a *seller) List() []*entity.Seller {
-	var allProds []*entity.Seller
+func (a *attribute) List() []*entity.Attribute {
+	var items []*entity.Attribute
 
 	sess, err := a.driver.NewSessionV2(gogm.SessionConfig{AccessMode: gogm.AccessModeWrite})
 	if err != nil {
 		log.Println(err.Error())
-		return allProds
+		return items
 	}
 
 	err = sess.Begin(context.Background())
 	if err != nil {
 		log.Println(err.Error())
-		return allProds
+		return items
 	}
 
 	defer a.commitAndClose(sess)
 
-	err = sess.LoadAll(context.Background(), &allProds)
+	err = sess.LoadAll(context.Background(), &items)
 	if err != nil {
 		log.Println(err.Error())
 	}
 
-	return allProds
+	return items
 }
 
-func (a *seller) commitAndClose(sess gogm.SessionV2) {
+func (a *attribute) commitAndClose(sess gogm.SessionV2) {
 	err := sess.Commit(context.Background())
 	if err != nil {
 		log.Fatal(sess.RollbackWithError(context.Background(), err))

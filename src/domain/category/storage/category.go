@@ -50,7 +50,7 @@ func (a *category) Update(categ entity.Category) *entity.Category {
 	return &categ
 }
 
-func (a *category) Delete(categ *entity.Category) bool {
+func (a *category) Delete(item *entity.Category) bool {
 	sess, err := a.driver.NewSessionV2(gogm.SessionConfig{AccessMode: gogm.AccessModeWrite})
 	if err != nil {
 		log.Println(err.Error())
@@ -65,7 +65,7 @@ func (a *category) Delete(categ *entity.Category) bool {
 
 	defer a.commitAndClose(sess)
 
-	err = sess.Delete(context.Background(), categ)
+	err = sess.Delete(context.Background(), item)
 	if err != nil {
 		log.Println(err.Error())
 		return false

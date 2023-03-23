@@ -2,14 +2,15 @@ package controller
 
 import (
 	"fmt"
-	"github.com/labstack/echo/v4"
-	"github.com/mindstand/gogm/v2"
 	"net/http"
 	"produx/domain/entity"
 	"produx/domain/product/dto"
 	"produx/infrastructure/container"
 	"produx/infrastructure/response"
 	"produx/infrastructure/validator"
+
+	"github.com/labstack/echo/v4"
+	"github.com/mindstand/gogm/v2"
 )
 
 type Validator interface {
@@ -27,7 +28,7 @@ func (a Product) Get(context echo.Context, c container.Container) error {
 
 	prod := c.GetProductService().Get(params.ID)
 	if prod == nil {
-		return fmt.Errorf("invalid product ID provided ")
+		return fmt.Errorf("invalid product ID provided")
 	}
 
 	return context.JSON(http.StatusOK, dto.NewProductResponse(prod))

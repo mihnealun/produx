@@ -10,5 +10,5 @@ type Seller struct {
 	Slug     string     `gogm:"name=slug"`
 	Image    string     `gogm:"name=image"`
 	Address  string     `gogm:"name=address"`
-	Products []*Product `gogm:"direction=incoming;relationship=SOLD_BY"`
+	Products []*Product `gogm:"direction=INCOMING;relationship=SOLD_BY"`
 }

@@ -1,11 +1,16 @@
 package dto
 
-import "produx/domain/entity"
+import (
+	"produx/domain/entity"
+	"produx/domain/seller/dto"
+)
 
 type ProductResponse struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	Slug string `json:"slug"`
+	ID         string                 `json:"id"`
+	Name       string                 `json:"name"`
+	Slug       string                 `json:"slug"`
+	Sellers    dto.SellerListResponse `json:"sellers"`
+	Attributes dto.SellerListResponse `json:"attributes"`
 }
 
 type ProductListResponse struct {

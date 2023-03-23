@@ -3,3 +3,4 @@
 /neo4j_data/neo4j/data/
 /.env
 /src/debug.log
+/neo4j_data/

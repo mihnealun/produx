@@ -2,10 +2,11 @@ package storage
 
 import (
 	"context"
-	"github.com/mindstand/gogm/v2"
 	"log"
 	"produx/domain/entity"
 	"produx/domain/product/service"
+
+	"github.com/mindstand/gogm/v2"
 )
 
 type product struct {
@@ -38,6 +39,7 @@ func (a *product) Get(id string) *entity.Product {
 	err = sess.Load(context.Background(), &result, id)
 	if err != nil {
 		log.Println(err.Error())
+		return nil
 	}
 
 	return &result
@@ -74,7 +76,27 @@ func (a *product) Update(prod entity.Product) *entity.Product {
 	return &prod
 }
 
-func (a *product) Delete(prod entity.Product) bool {
+func (a *product) Delete(item entity.Product) bool {
+	sess, err := a.driver.NewSessionV2(gogm.SessionConfig{AccessMode: gogm.AccessModeWrite})
+	if err != nil {
+		log.Println(err.Error())
+		return false
+	}
+
+	err = sess.Begin(context.Background())
+	if err != nil {
+		log.Println(err.Error())
+		return false
+	}
+
+	defer a.commitAndClose(sess)
+
+	err = sess.Delete(context.Background(), item)
+	if err != nil {
+		log.Println(err.Error())
+		return false
+	}
+
 	return true
 }
 
@@ -82,6 +104,9 @@ func (a *product) List() []*entity.Product {
 	var allProds []*entity.Product
 
 	sess, err := a.driver.NewSessionV2(gogm.SessionConfig{AccessMode: gogm.AccessModeWrite})
+	if sess != nil {
+		defer a.commitAndClose(sess)
+	}
 	if err != nil {
 		log.Println(err.Error())
 		return allProds
@@ -92,8 +117,6 @@ func (a *product) List() []*entity.Product {
 		log.Println(err.Error())
 		return allProds
 	}
-
-	defer a.commitAndClose(sess)
 
 	err = sess.LoadAll(context.Background(), &allProds)
 	if err != nil {

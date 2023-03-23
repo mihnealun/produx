@@ -89,6 +89,8 @@ func (c *container) InitStorageDriver() error {
 		&entity.Seller{},
 		&entity.Product{},
 		&entity.Category{},
+		&entity.Attribute{},
+		&entity.AttributeValue{},
 		&entity.Comment{},
 		&entity.Target{},
 		&entity.User{},

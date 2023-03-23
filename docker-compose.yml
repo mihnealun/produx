@@ -22,20 +22,23 @@ services:
 
   neo4j:
     container_name: produx_neo4j
-    image: bitnami/neo4j:latest
+#    image: bitnami/neo4j:latest
+#    image: thetallgrassnet/alpine-neo4j
+    image: neo4j/neo4j-arm64-experimental:4.1.0-arm64
     ports:
       - "7474:7474"
       - "7473:7473"
       - "7687:7687"
     volumes:
-      - ./neo4j_data:/bitnami
+      - ./neo4j_data:/data
+#      - ./neo4j_data:/var/lib/neo4j/data
     env_file:
       - .env
     networks:
       - default
 #    healthcheck:
 #      test: ["CMD", "curl", "-f", "http://localhost:7474/"]
-#      timeout: 20s
+#      timeout: 10s
 #      retries: 10
 
 networks:
