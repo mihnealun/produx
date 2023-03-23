@@ -11,6 +11,7 @@ type ProductResponse struct {
 	Slug       string                 `json:"slug"`
 	Sellers    dto.SellerListResponse `json:"sellers"`
 	Attributes dto.SellerListResponse `json:"attributes"`
+	Category   string                 `json:"category"`
 }
 
 type ProductListResponse struct {
@@ -20,9 +21,10 @@ type ProductListResponse struct {
 
 func NewProductResponse(item *entity.Product) ProductResponse {
 	return ProductResponse{
-		ID:   item.UUID,
-		Name: item.Name,
-		Slug: item.Slug,
+		ID:       item.UUID,
+		Name:     item.Name,
+		Slug:     item.Slug,
+		Category: item.Category.Name,
 	}
 }
 
