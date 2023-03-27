@@ -64,6 +64,9 @@ func (a Product) Create(context echo.Context, c container.Container) error {
 	product.Seller = seller
 
 	result := c.GetProductService().Add(product)
+	if result == nil {
+		return fmt.Errorf("error adding product %s", product.Name)
+	}
 
 	return context.JSON(http.StatusOK, dto.NewProductResponse(result))
 }

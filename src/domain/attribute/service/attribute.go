@@ -10,4 +10,5 @@ type Attribute interface {
 	Delete(app entity.Attribute) bool
 	List() []*entity.Attribute
 	Get(id string) *entity.Attribute
+	GetByName(name string) *entity.Attribute
 }

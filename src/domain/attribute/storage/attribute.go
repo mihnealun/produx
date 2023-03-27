@@ -19,6 +19,36 @@ func NewAttributeService(driver *gogm.Gogm) service.Attribute {
 	}
 }
 
+func (a *attribute) GetByName(name string) *entity.Attribute {
+	var att entity.Attribute
+
+	sess, err := a.driver.NewSessionV2(gogm.SessionConfig{AccessMode: gogm.AccessModeWrite})
+	if err != nil {
+		log.Println(err.Error())
+		return nil
+	}
+
+	err = sess.Begin(context.Background())
+	if err != nil {
+		log.Println(err.Error())
+		return nil
+	}
+
+	defer a.commitAndClose(sess)
+
+	query := "match c=(:Attribute{name:$name}) return c"
+	err = sess.Query(context.Background(), query, map[string]interface{}{
+		"name": name,
+	}, &att)
+
+	if err != nil {
+		log.Println(err.Error())
+		return nil
+	}
+
+	return &att
+}
+
 func (a *attribute) Get(id string) *entity.Attribute {
 	var attribute entity.Attribute
 

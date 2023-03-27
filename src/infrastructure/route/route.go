@@ -222,6 +222,38 @@ func PreparePublicRoutes(e *echo.Echo, containerInstance container.Container) {
 		return sellerController.Delete(c, containerInstance)
 	})
 
+	// -------------------- ATTRIBUTE -------------------------
+
+	e.GET("/attribute/:id", func(c echo.Context) error {
+		attController := controller.Attribute{}
+
+		return attController.Get(c, containerInstance)
+	})
+
+	e.PUT("/attribute/:id", func(c echo.Context) error {
+		attController := controller.Attribute{}
+
+		return attController.Update(c, containerInstance)
+	})
+
+	e.POST("/attribute", func(c echo.Context) error {
+		attController := controller.Attribute{}
+
+		return attController.Create(c, containerInstance)
+	})
+
+	e.GET("/attribute", func(c echo.Context) error {
+		attController := controller.Attribute{}
+
+		return attController.List(c, containerInstance)
+	})
+
+	e.DELETE("/attribute/:id", func(c echo.Context) error {
+		attController := controller.Attribute{}
+
+		return attController.Delete(c, containerInstance)
+	})
+
 	// -------------------- CART -------------------------
 
 }

@@ -9,6 +9,6 @@ type AttributeValue struct {
 	Name       string       `gogm:"name=name"`
 	Image      string       `gogm:"name=image"`
 	Type       string       `gogm:"name=type"`
-	Value      interface{}  `gogm:"name=value"`
+	Value      any          `gogm:"name=value"`
 	Attributes []*Attribute `gogm:"direction=INCOMING;relationship=HAS_VALUE"`
 }
