@@ -40,6 +40,8 @@ func (a Attribute) Create(context echo.Context, c container.Container) error {
 		BaseUUIDNode: gogm.BaseUUIDNode{},
 		Name:         context.FormValue("name"),
 		Slug:         context.FormValue("slug"),
+		Image:        context.FormValue("image"),
+		DefaultValue: context.FormValue("default_value"),
 	}
 
 	result := service.Add(attribute)

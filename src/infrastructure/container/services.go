@@ -8,6 +8,8 @@ import (
 	"os"
 	attributeService "produx/domain/attribute/service"
 	attributeStorage "produx/domain/attribute/storage"
+	attributeGroupService "produx/domain/attribute_group/service"
+	attributeGroupStorage "produx/domain/attribute_group/storage"
 	categoryService "produx/domain/category/service"
 	categoryStorage "produx/domain/category/storage"
 	"produx/domain/entity"
@@ -34,6 +36,7 @@ type Container interface {
 	GetProductService() productService.Product
 	GetSellerService() sellerService.Seller
 	GetAttributeService() attributeService.Attribute
+	GetAttributeGroupService() attributeGroupService.AttributeGroup
 }
 
 type container struct {
@@ -140,4 +143,8 @@ func (c *container) GetSellerService() sellerService.Seller {
 
 func (c *container) GetAttributeService() attributeService.Attribute {
 	return attributeStorage.NewAttributeService(c.gogm)
+}
+
+func (c *container) GetAttributeGroupService() attributeGroupService.AttributeGroup {
+	return attributeGroupStorage.NewAttributeGroupService(c.gogm)
 }
