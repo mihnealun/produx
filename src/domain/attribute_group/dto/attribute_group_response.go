@@ -14,16 +14,15 @@ type AttributeGroupListResponse struct {
 	Groups []AttributeGroupResponse `json:"groups"`
 }
 
-func NewAttributeGroupResponse(item *entity.Attribute) AttributeGroupResponse {
+func NewAttributeGroupResponse(item *entity.AttributeGroup) AttributeGroupResponse {
 	return AttributeGroupResponse{
-		ID:    item.UUID,
-		Name:  item.Name,
-		Slug:  item.Slug,
-		Image: item.Image,
+		ID:   item.UUID,
+		Name: item.Name,
+		Slug: item.Slug,
 	}
 }
 
-func NewAttributeGroupListResponse(attributes []*entity.Attribute) AttributeGroupListResponse {
+func NewAttributeGroupListResponse(attributes []*entity.AttributeGroup) AttributeGroupListResponse {
 	result := AttributeGroupListResponse{
 		Groups: []AttributeGroupResponse{},
 	}
