@@ -103,10 +103,13 @@ func (a *product) Delete(item entity.Product) bool {
 func (a *product) List() []*entity.Product {
 	var allProds []*entity.Product
 
-	sess, err := a.driver.NewSessionV2(gogm.SessionConfig{AccessMode: gogm.AccessModeWrite})
+	sess, err := a.driver.NewSessionV2(gogm.SessionConfig{
+		AccessMode: gogm.AccessModeRead,
+	})
 	if sess != nil {
 		defer a.commitAndClose(sess)
 	}
+
 	if err != nil {
 		log.Println(err.Error())
 		return allProds
@@ -118,7 +121,7 @@ func (a *product) List() []*entity.Product {
 		return allProds
 	}
 
-	err = sess.LoadAll(context.Background(), &allProds)
+	err = sess.LoadAllDepth(context.Background(), &allProds, 3)
 	if err != nil {
 		log.Println(err.Error())
 	}

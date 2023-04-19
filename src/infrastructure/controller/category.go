@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"produx/domain/entity"
-	"produx/domain/product/dto"
 	"produx/infrastructure/container"
 	"produx/infrastructure/response"
 
@@ -93,5 +92,5 @@ func (a Category) List(context echo.Context, c container.Container) error {
 func (a Category) Products(context echo.Context, c container.Container) error {
 	category := c.GetCategoryService().Get(context.Param("id"))
 
-	return context.JSON(http.StatusOK, dto.NewProductListResponse(category.Products))
+	return context.JSON(http.StatusOK, response.NewProductListResponse(category.Products))
 }

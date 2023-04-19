@@ -13,17 +13,17 @@ type CategoryResponse struct {
 }
 
 func NewCategoryResponse(cat *entity.Category) CategoryResponse {
-	var subs []CategoryResponse
+	subcategories := make([]CategoryResponse, 0)
 
 	for _, c := range cat.Subcategories {
-		subs = append(subs, NewCategoryResponse(c))
+		subcategories = append(subcategories, NewCategoryResponse(c))
 	}
 
 	return CategoryResponse{
 		ID:            cat.UUID,
 		Name:          cat.Name,
 		Slug:          cat.Slug,
-		Subcategories: subs,
+		Subcategories: subcategories,
 		ProductCount:  len(cat.Products),
 	}
 }

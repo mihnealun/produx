@@ -1,17 +1,15 @@
-package dto
+package response
 
 import (
 	"produx/domain/entity"
-	"produx/domain/seller/dto"
 )
 
 type ProductResponse struct {
-	ID         string                 `json:"id"`
-	Name       string                 `json:"name"`
-	Slug       string                 `json:"slug"`
-	Sellers    dto.SellerListResponse `json:"sellers"`
-	Attributes dto.SellerListResponse `json:"attributes"`
-	Category   string                 `json:"category"`
+	ID       string                   `json:"id"`
+	Name     string                   `json:"name"`
+	Slug     string                   `json:"slug"`
+	Seller   SellerResponse           `json:"seller"`
+	Category *ProductCategoryResponse `json:"category"`
 }
 
 type ProductListResponse struct {
@@ -24,7 +22,8 @@ func NewProductResponse(item *entity.Product) ProductResponse {
 		ID:       item.UUID,
 		Name:     item.Name,
 		Slug:     item.Slug,
-		Category: item.Category.Name,
+		Category: NewProductCategoryResponse(item.Category),
+		Seller:   NewSellerResponse(item.Seller),
 	}
 }
 

@@ -1,6 +1,5 @@
 package container
 
-import "C"
 import (
 	"context"
 	"fmt"

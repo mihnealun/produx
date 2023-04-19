@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"produx/domain/entity"
-	"produx/domain/product/dto"
 	"produx/infrastructure/container"
 	"produx/infrastructure/response"
 	"produx/infrastructure/validator"
@@ -31,7 +30,7 @@ func (a Product) Get(context echo.Context, c container.Container) error {
 		return fmt.Errorf("invalid product ID provided")
 	}
 
-	return context.JSON(http.StatusOK, dto.NewProductResponse(prod))
+	return context.JSON(http.StatusOK, response.NewProductResponse(prod))
 }
 
 func (a Product) Create(context echo.Context, c container.Container) error {
@@ -68,11 +67,11 @@ func (a Product) Create(context echo.Context, c container.Container) error {
 		return fmt.Errorf("error adding product %s", product.Name)
 	}
 
-	return context.JSON(http.StatusOK, dto.NewProductResponse(result))
+	return context.JSON(http.StatusOK, response.NewProductResponse(result))
 }
 
 func (a Product) Update(context echo.Context, c container.Container) error {
-	return context.JSON(http.StatusOK, dto.NewProductResponse(&entity.Product{}))
+	return context.JSON(http.StatusOK, response.NewProductResponse(&entity.Product{}))
 }
 
 func (a Product) Delete(context echo.Context, c container.Container) error {
@@ -82,5 +81,5 @@ func (a Product) Delete(context echo.Context, c container.Container) error {
 func (a Product) List(context echo.Context, c container.Container) error {
 	products := c.GetProductService().List()
 
-	return context.JSON(http.StatusOK, dto.NewProductListResponse(products))
+	return context.JSON(http.StatusOK, response.NewProductListResponse(products))
 }
