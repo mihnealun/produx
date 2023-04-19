@@ -91,7 +91,7 @@ func (a *category) Get(id string) *entity.Category {
 
 	defer a.commitAndClose(sess)
 
-	err = sess.Load(context.Background(), &category, &id)
+	err = sess.LoadDepth(context.Background(), &category, &id, 3)
 	if err != nil {
 		log.Println(err.Error())
 	}
