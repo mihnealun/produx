@@ -2,10 +2,10 @@ package storage
 
 import (
 	"context"
-	"produx/domain/entity"
-	"produx/domain/service"
 	"github.com/mindstand/gogm/v2"
 	"log"
+	"produx/domain/entity"
+	"produx/domain/service"
 )
 
 type comment struct {
@@ -207,6 +207,9 @@ func (c *comment) Like(CommentID string, UserID string) bool {
 
 	comment := c.GetComment(CommentID)
 	user := c.GetUser(UserID)
+	if user == nil {
+		return false
+	}
 
 	if comment.Likers != nil {
 		for _, liker := range comment.Likers {
@@ -219,6 +222,7 @@ func (c *comment) Like(CommentID string, UserID string) bool {
 
 	comment.Likers = append(comment.Likers, user)
 
+	// save the new relationship
 	err = sess.SaveDepth(context.Background(), user, 2)
 	if err != nil {
 		panic(err)

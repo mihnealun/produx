@@ -2,11 +2,11 @@ package controller
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/mindstand/gogm/v2"
+	"net/http"
 	"produx/domain/entity"
 	"produx/infrastructure/container"
 	"produx/infrastructure/response"
-	"github.com/mindstand/gogm/v2"
-	"net/http"
 )
 
 type User struct{}

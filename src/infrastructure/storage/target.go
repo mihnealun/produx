@@ -2,10 +2,10 @@ package storage
 
 import (
 	"context"
-	"produx/domain/entity"
-	"produx/domain/service"
 	"github.com/mindstand/gogm/v2"
 	"log"
+	"produx/domain/entity"
+	"produx/domain/service"
 )
 
 type target struct {
